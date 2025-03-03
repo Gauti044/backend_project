@@ -1,7 +1,5 @@
 /*
-
 require('dotenv').config({path: './env'})
-
 this will run but the consistency of the code is getting hindered as instead of import we are using the require syntax
 */
 
@@ -13,14 +11,32 @@ dotenv.config({
   path: "./.env",
 });
 
-// import mongoose from "mongoose"
-// import { DB_NAME } from "./constants.js";
 
-connectDB();
+connectDB()
+
+.then(()=>{
+    app.on("error",(error)=>{
+        console.log("ERROR: ",error);
+        throw error
+    })
+    app.listen(process.env.PORT||8000,()=>{
+        console.log(`Server is running at port${process.env.PORT}`);
+    })
+})
+.catch((err)=>{
+    console.log("MONGODB connection failed",err)
+})
+
+
+
+
+
 
 /*FIRST aprroach , do everything in the index file
-                doesnt create modularity but is easier to read
+doesnt create modularity but is easier to read
 
+// import mongoose from "mongoose"
+// import { DB_NAME } from "./constants.js";
 import express from "express"
 const app=express()
 
